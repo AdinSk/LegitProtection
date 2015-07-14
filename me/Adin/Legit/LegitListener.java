@@ -26,9 +26,9 @@ public class LegitListener implements Listener {
 		String pn = p.getName();
 		
 		//Events
-					players.add(p);	
-					if (plugin.getConfig().getBoolean("EnableJoinMsg") == true) {
-						p.sendMessage(plugin.getConfig().getString("JoinMsg").replace("&", "§").replace("%player%", pn).replace("%line%", "\n"));
+		players.add(p);	
+		if (plugin.getConfig().getBoolean("EnableJoinMsg") == true) {
+			p.sendMessage(plugin.getConfig().getString("JoinMsg").replace("&", "§").replace("%player%", pn).replace("%line%", "\n"));
 					}
 				}
 	@EventHandler
