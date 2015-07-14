@@ -1,0 +1,11 @@
+Text: '...'
+
+EnableJoinMsg: true
+JoinMsg: '&7---------%line%&aPlease write &f&l...%line%&7---------'
+
+Succes: '&7---------%line%&a&lSucces!%line%&7---------'
+NoSucces: '&7---------%line%&cPlease write &f&l...%line%&7---------'
+
+EnableSounds: true
+SuccesSound: NOTE_PLING
+NoSuccesSound: NOTE_BASS
