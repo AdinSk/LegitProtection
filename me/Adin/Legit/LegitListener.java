@@ -3,6 +3,7 @@ package me.Adin.Legit;
 import java.util.ArrayList;
 
 import org.bukkit.Sound;
+import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -13,65 +14,67 @@ import org.bukkit.event.player.PlayerMoveEvent;
 public class LegitListener implements Listener {
 
 	private Main plugin;
-	private ArrayList<Player> players = new ArrayList<Player>();
-	
+	private Configuration cfg = plugin.getConfig();
+	private ArrayList<Player> players = new ArrayList<>();
+
 	public LegitListener(Main instance) {
 		this.plugin = instance;
 	}
-	
+
 	@EventHandler
 	public void onJoin(PlayerJoinEvent e) {
-		//Players
+		// Players
 		Player p = e.getPlayer();
 		String pn = p.getName();
-		
-		//Events
-		players.add(p);	
-		if (plugin.getConfig().getBoolean("EnableJoinMsg") == true) {
-			p.sendMessage(plugin.getConfig().getString("JoinMsg").replace("&", "§").replace("%player%", pn).replace("%line%", "\n"));
-					}
-				}
+
+		// Events
+		players.add(p);
+		if (cfg.getBoolean("EnableJoinMsg")) {
+			p.sendMessage(cfg.getString("JoinMsg").replace("&", "§").replace("%player%", pn).replace("%line%", "\n"));
+		}
+	}
+
 	@EventHandler
 	public void onChat(AsyncPlayerChatEvent e) {
-		//Players
+		// Players
 		Player p = e.getPlayer();
 		String msg = e.getMessage();
-		
-		//Events
+
+		// Events
 		if (players.contains(p)) {
-			if (msg.startsWith(plugin.getConfig().getString("Text"))) {
+			if (msg.startsWith(cfg.getString("Text"))) {
 				players.remove(p);
-				p.sendMessage(plugin.getConfig().getString("Succes").replace("&", "§").replace("%line%", "\n"));
-				this.SoundSucces(p);
+				p.sendMessage(cfg.getString("Succes").replace("&", "§").replace("%line%", "\n"));
+				SoundSucces(p);
 				e.setCancelled(true);
-				} else {
-					if (players.contains(p)) {
-						this.SoundNoSucces(p);
-						p.sendMessage(plugin.getConfig().getString("NoSucces").replace("&", "§").replace("%line%", "\n"));
-						e.setCancelled(true);
-					}
-				}
+			} else {
+				SoundNoSucces(p);
+				p.sendMessage(cfg.getString("NoSucces").replace("&", "§").replace("%line%", "\n"));
+				e.setCancelled(true);
 			}
 		}
+	}
+
 	@EventHandler
 	public void onMove(PlayerMoveEvent e) {
-		//Players
+		// Players
 		Player p = e.getPlayer();
-		
-		//Events
+
+		// Events
 		if (players.contains(p)) {
 			e.setCancelled(true);
 		}
 	}
-	
+
 	public void SoundSucces(Player p) {
-		if (plugin.getConfig().getBoolean("EnableSounds") == true) {
-			p.playSound(p.getLocation(), Sound.valueOf(plugin.getConfig().getString("SuccesSound")), 1, 1);
+		if (cfg.getBoolean("EnableSounds")) {
+			p.playSound(p.getLocation(), Sound.valueOf(cfg.getString("SuccesSound")), 1, 1);
 		}
 	}
+
 	public void SoundNoSucces(Player p) {
-		if (plugin.getConfig().getBoolean("EnableSounds") == true) {
-			p.playSound(p.getLocation(), Sound.valueOf(plugin.getConfig().getString("NoSuccesSound")), 1, 1);
+		if (cfg.getBoolean("EnableSounds")) {
+			p.playSound(p.getLocation(), Sound.valueOf(cfg.getString("NoSuccesSound")), 1, 1);
 		}
 	}
 }
